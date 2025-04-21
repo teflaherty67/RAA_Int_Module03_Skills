@@ -14,6 +14,17 @@
             FilteredElementCollector colModelLines = new FilteredElementCollector(curDoc, curDoc.ActiveView.Id)
                 .OfClass(typeof(CurveElement));
 
+            // 02. create reference array & point list
+            ReferenceArray newArray = new ReferenceArray();
+            List<XYZ> pointsList = new List<XYZ>();
+
+            // 03. loop through the lines
+            foreach(ModelLine curLine in colModelLines)
+            {
+                // 03a. get the midpoint of the line
+                Curve curCurve = curLine.GeometryCurve;
+                XYZ midPoint = curCurve.Evaluate(0.5, true);
+            }
 
 
             return Result.Succeeded;
