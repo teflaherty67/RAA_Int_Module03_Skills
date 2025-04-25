@@ -24,6 +24,15 @@
                 // 03a. get the midpoint of the line
                 Curve curCurve = curLine.GeometryCurve;
                 XYZ midPoint = curCurve.Evaluate(0.5, true);
+
+                // 03b. add lines to reference array
+                newArray.Append(new Reference(curLine));
+
+                // 03c. add midpoint to point list
+                pointsList.Add(midPoint);
+
+
+
             }
 
 
