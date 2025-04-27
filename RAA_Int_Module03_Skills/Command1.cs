@@ -31,10 +31,26 @@
                 // 03c. add midpoint to point list
                 pointsList.Add(midPoint);
 
-
-
             }
 
+            // 04. oder list left to right
+            List<XYZ> sortedList = pointsList.OrderBy(p => p.X).ThenBy(p => p.Y).ToList();
+
+            // 04a. get location of first & last line in sorted list
+            XYZ point1 = sortedList.First();
+            XYZ point2 = sortedList.Last();
+
+            // 05. create line for dimension string location
+            Line dimLine = Line.CreateBound(point1, point2);
+
+            // 06. create tranmsaction & add dimension
+            using (Transaction t = new Transaction (curDoc))
+            {
+                t.Start("Create dimension");
+                Dimension newDim = curDoc.Create.NewDimension(curDoc.ActiveView, dimLine, newArray);
+
+                t.Commit();
+            }
 
             return Result.Succeeded;
         }
