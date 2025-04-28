@@ -23,7 +23,11 @@
             {
                 // 03a. get the midpoint of the line
                 Curve curCurve = curLine.GeometryCurve;
-                XYZ midPoint = curCurve.Evaluate(0.5, true);
+                XYZ midPoint = curCurve.Evaluate(0.75, true);
+
+                // 07. check if line is vertical
+                if (Utils.IsLineVertical(curCurve) == false)
+                    continue;
 
                 // 03b. add lines to reference array
                 newArray.Append(new Reference(curLine));
@@ -41,7 +45,8 @@
             XYZ point2 = sortedList.Last();
 
             // 05. create line for dimension string location
-            Line dimLine = Line.CreateBound(point1, point2);
+            // Line dimLine = Line.CreateBound(point1, point2);
+            Line dimLine = Line.CreateBound(point1, new XYZ(point2.X, point1.Y, 0));
 
             // 06. create tranmsaction & add dimension
             using (Transaction t = new Transaction (curDoc))

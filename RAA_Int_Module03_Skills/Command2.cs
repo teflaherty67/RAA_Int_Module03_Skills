@@ -1,4 +1,6 @@
-﻿namespace RAA_Int_Module03_Skills
+﻿using Autodesk.Revit.DB.Architecture;
+
+namespace RAA_Int_Module03_Skills
 {
     [Transaction(TransactionMode.Manual)]
     public class Command2 : IExternalCommand
@@ -8,9 +10,24 @@
             // Revit application and document variables
             UIApplication uiapp = commandData.Application;
             UIDocument uidoc = uiapp.ActiveUIDocument;
-            Document doc = uidoc.Document;
+            Document curDoc = uidoc.Document;
 
-            // Your code goes here
+            // 01. select room
+            Reference curRef = uiapp.ActiveUIDocument.Selection.PickObject(ObjectType.Element, "Select a room");
+            Room curRoom = curDoc.GetElement(curRef) as Room;
+
+            // 02. create reference array & point list
+            ReferenceArray refArray = new ReferenceArray();
+            List<XYZ> pointList = new List<XYZ>();
+
+            // 03. set boundary options
+            SpatialElementBoundaryOptions sebOptions = new SpatialElementBoundaryOptions();
+            sebOptions.SpatialElementBoundaryLocation = SpatialElementBoundaryLocation.Finish;
+
+            // 03a. get room boundaries
+            List<BoundarySegment> boundarySegments = curRoom.GetBoundarySegments(sebOptions).First().ToList();
+
+
 
 
             return Result.Succeeded;
